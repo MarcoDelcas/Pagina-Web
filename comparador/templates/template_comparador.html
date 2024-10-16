@@ -1,0 +1,302 @@
+{% extends "template.html" %}
+{% load static %}
+{% block title %}COMPARADOR{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+{% endblock %}
+
+{% block contenido %}
+<body class="subpage">
+    <div id="page-wrapper">
+        <section id="content">
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+            <h1>Comparador de Autos</h1>
+
+            <style>
+                /* Tablas */
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin: 20px 0;
+                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                }
+
+                table, th, td {
+                    border: 1px solid var(--color-table-border);
+                }
+
+                th, td {
+                    padding: 15px;
+                    text-align: left;
+                    transition: background-color 0.3s, color 0.3s;
+                }
+
+                /* Encabezados de tabla */
+                th {
+                    background-color: var(--color-table-header);
+                    color: #575757;
+                    text-transform: uppercase;
+                    letter-spacing: 0.1em;
+                }
+
+                /* Estilo de filas */
+                tr:nth-child(even) {
+                    background-color: var(--color-table-even);
+                }
+
+                tr:nth-child(odd) {
+                    background-color: var(--color-table-odd);
+                }
+
+                /* Estilo de las celdas */
+                td {
+                    color: var(--color-text);
+                }
+
+                /* Efecto hover en filas */
+                tr:hover {
+                    background-color: #d4e3f1; /* Cambio de fondo al pasar el mouse */
+                }
+            </style>
+
+            <form method="POST" id="autoForm">
+                {% csrf_token %}
+
+                <div class="container">
+                    <div class="autos-list">
+                        <h2>Seleccionar Auto</h2>
+                        
+                        <style>
+                            /* Estilo del select */
+                            #autos {
+                                width: 100%;
+                                padding: 10px;
+                                font-size: 16px;
+                                border: 1px solid var(--color-table-border);
+                                border-radius: 4px;
+                                background-color: #ffffff;
+                                color: var(--color-text);
+                                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                                appearance: none; /* Quitar el estilo predeterminado del navegador */
+                                background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5"><polygon points="0,0 5,5 10,0" fill="%23999" /></svg>');
+                                background-repeat: no-repeat;
+                                background-position: right 10px center; /* Posición del icono */
+                                background-size: 10px;
+                            }
+                        
+                            /* Estilo de las opciones */
+                            #autos option {
+                                padding: 10px;
+                                font-size: 16px;
+                                background-color: #ffffff;
+                                color: var(--color-text);
+                            }
+                        
+                            /* Efecto hover en el select */
+                            #autos:hover {
+                                border-color: var(--color-table-border-hover);
+                                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+                            }
+                        
+                            /* Efecto al seleccionar */
+                            #autos:focus {
+                                outline: none; /* Quitar el borde predeterminado del enfoque */
+                                border-color: var(--color-table-border-focus);
+                                box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Sombra azul al enfocar */
+                            }
+                        </style>
+
+                        <select name="selected_autos" id="autos" onchange="addAuto()">
+                            <option value="">Seleccionar un auto...</option>
+                            {% for auto in autos %}
+                            <option value="{{ auto.id }}" data-precio="{{ auto.precio }}" data-cilindraje="{{ auto.cilindraje }}"
+                                data-capacidad="{{ auto.capacidad_personas }}">{{ auto.marca }} {{ auto.modelo }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="selected-autos">
+                        <ul id="selected-autos-list">
+                            <!-- Lista dinámica de autos seleccionados -->
+                        </ul>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Tabla dinámica de autos seleccionados -->
+            <table id="tabla-autos">
+                <thead>
+                    <tr>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Precio</th>
+                        <th>Cilindraje</th>
+                        <th>Capacidad Personas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Contenido dinámico generado con JavaScript -->
+                </tbody>
+            </table>
+
+            <!-- Gráficos separados para cada característica -->
+            <h2>Gráfico Comparativo de Precios</h2>
+            <canvas id="comparacionPrecios" width="600" height="400"></canvas>
+
+            <h2>Gráfico Comparativo de Cilindraje</h2>
+            <canvas id="comparacionCilindraje" width="600" height="400"></canvas>
+
+            <h2>Gráfico Comparativo de Capacidad</h2>
+            <canvas id="comparacionCapacidad" width="600" height="400"></canvas>
+
+            <script>
+                var select = document.getElementById("autos");
+                var selectedAutosList = document.getElementById("selected-autos-list");
+                var tablaAutos = document.getElementById("tabla-autos").getElementsByTagName('tbody')[0];
+                var selectedData = {
+                    labels: [],
+                    precios: [],
+                    cilindraje: [],
+                    capacidad: []
+                };
+
+                function addAuto() {
+                    var selectedValue = select.value;
+                    var selectedText = select.options[select.selectedIndex].text;
+
+                    // Obtener los atributos del auto seleccionado
+                    var precio = parseFloat(select.options[select.selectedIndex].getAttribute("data-precio"));
+                    var cilindraje = parseFloat(select.options[select.selectedIndex].getAttribute("data-cilindraje"));
+                    var capacidad = parseInt(select.options[select.selectedIndex].getAttribute("data-capacidad"));
+
+                    // Verificar si un auto fue seleccionado y si no está ya en la lista
+                    if (selectedValue && !Array.from(selectedAutosList.getElementsByTagName('li')).some(li => li.textContent.includes(selectedText))) {
+                        // Crear un elemento <li> para la lista de autos seleccionados
+                        var li = document.createElement("li");
+                        li.textContent = selectedText;
+                        selectedAutosList.appendChild(li);
+
+                        // Crear una fila en la tabla con los detalles del auto
+                        var row = tablaAutos.insertRow();
+                        row.innerHTML = `
+                            <td>${selectedText.split(" ")[0]}</td>
+                            <td>${selectedText.split(" ")[1]}</td>
+                            <td>$${precio}</td>
+                            <td>${cilindraje} cc</td>
+                            <td>${capacidad}</td>
+                        `;
+
+                        // Agregar los datos al objeto `selectedData` para los gráficos
+                        selectedData.labels.push(selectedText);
+                        selectedData.precios.push(precio);
+                        selectedData.cilindraje.push(cilindraje);
+                        selectedData.capacidad.push(capacidad);
+
+                        // Actualizar los gráficos individuales
+                        actualizarGraficoPrecios();
+                        actualizarGraficoCilindraje();
+                        actualizarGraficoCapacidad();
+                    }
+
+                    // Limpiar el selector después de seleccionar
+                    select.selectedIndex = 0;
+                }
+
+                // Función para actualizar el gráfico de precios
+                function actualizarGraficoPrecios() {
+                    if (window.graficoPrecios) {
+                        window.graficoPrecios.destroy();  // Destruir el gráfico previo si existe
+                    }
+                    
+                    var canvasPrecios = document.getElementById("comparacionPrecios");
+                    window.graficoPrecios = new Chart(canvasPrecios, {
+                        type: 'bar',
+                        data: {
+                            labels: selectedData.labels,
+                            datasets: [{
+                                label: 'Precio ($)',
+                                data: selectedData.precios,
+                                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Función para actualizar el gráfico de cilindraje
+                function actualizarGraficoCilindraje() {
+                    if (window.graficoCilindraje) {
+                        window.graficoCilindraje.destroy();  // Destruir el gráfico previo si existe
+                    }
+                    
+                    var canvasCilindraje = document.getElementById("comparacionCilindraje");
+                    window.graficoCilindraje = new Chart(canvasCilindraje, {
+                        type: 'bar',
+                        data: {
+                            labels: selectedData.labels,
+                            datasets: [{
+                                label: 'Cilindraje (cc)',
+                                data: selectedData.cilindraje,
+                                backgroundColor: 'rgba(153, 102, 255, 0.6)',
+                                borderColor: 'rgba(153, 102, 255, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Función para actualizar el gráfico de capacidad
+                function actualizarGraficoCapacidad() {
+                    if (window.graficoCapacidad) {
+                        window.graficoCapacidad.destroy();  // Destruir el gráfico previo si existe
+                    }
+                    
+                    var canvasCapacidad = document.getElementById("comparacionCapacidad");
+                    window.graficoCapacidad = new Chart(canvasCapacidad, {
+                        type: 'bar',
+                        data: {
+                            labels: selectedData.labels,
+                            datasets: [{
+                                label: 'Capacidad (Personas)',
+                                data: selectedData.capacidad,
+                                backgroundColor: 'rgba(255, 159, 64, 0.6)',
+                                borderColor: 'rgba(255, 159, 64, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                }
+            </script>
+
+        </section>
+    </div>
+</body>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "template.html" %}
+{% load static %}
+{% block title %}DASHBOARD DIAGRAMAS{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/diagramas.css' %}">
+{% endblock %}
+
+{% block contenido %}
+<body class="subpage">
+    <div id="page-wrapper" class="container">
+        <section id="content">
+            <h2 class="text-center my-4">Gráficas de Automóviles por Tipo</h2>
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+            <script>
+                // Función para crear un gráfico
+                function crearGrafico(ctx, modelos, precios, tipo) {
+                    return new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: modelos,
+                            datasets: [{
+                                label: 'Precios de Automóviles (' + tipo + ')',
+                                data: precios,
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                }
+            </script>
+
+            {% for tipo, datos in datos_por_tipo.items %}
+                <h3 class="text-center">{{ tipo }}</h3>
+                <div class="chart-container">
+                    <canvas id="chart-{{ forloop.counter }}" width="400" height="200"></canvas>
+                </div>
+                <script>
+                    (function() {
+                        // Obtener los datos pasados desde Django
+                        const modelos = {{ datos.modelos|safe }};
+                        const precios = {{ datos.precios|safe }};
+                        
+                        // Crear la gráfica
+                        const ctx = document.getElementById('chart-{{ forloop.counter }}').getContext('2d');
+                        crearGrafico(ctx, modelos, precios, '{{ tipo }}');
+                    })();
+                </script>
+            {% endfor %}
+        </section>
+    </div>
+</body>
+{% endblock %}

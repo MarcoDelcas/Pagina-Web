@@ -1,0 +1,110 @@
+{% extends "template.html" %}
+{% load static %}
+{% block title %}INICIO{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+{% endblock %}
+
+{% block contenido %}
+<!-- Banner -->
+<section id="banner" class="bg-light py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-12 mb-4">
+                <!-- Banner Copy -->
+                <p class="lead">Bienvenido a Clover, tu plataforma de estadísticas automotrices. Clover es la herramienta definitiva para quienes buscan analizar y comparar vehículos de manera rápida y sencilla.</p>
+                <!-- <a href="#" class="btn btn-primary btn-lg">Da click aquí!</a> -->
+            </div>
+            <div class="col-md-6 col-12">
+                <!-- Banner Image -->
+                <a href="#" class="bordered-feature-image"><img src="{% static 'img/siluete.jpg' %}" alt="" class="img-fluid" /></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features -->
+<section id="features" class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-6 mb-4">
+                <!-- Feature #1 -->
+                <section>
+                    <a href="#" class="bordered-feature-image"><img src="{% static 'img/a.webp' %}" alt="" class="img-fluid" /></a>
+                    <h2>Mercedes Benz Clase Gla 2.0 GLA 250 SPORT DCT Suv 2018</h2>
+                    <p>El Mercedes-Benz Clase GLA 2.0 GLA 250 SPORT DCT SUV 2018 es un vehículo que combina lujo, deportividad y un rendimiento ágil dentro del segmento de SUVs compactos.</p>
+                </section>
+            </div>
+            <div class="col-md-3 col-6 mb-4">
+                <!-- Feature #2 -->
+                <section>
+                    <a href="#" class="bordered-feature-image"><img src="{% static 'img/b.webp' %}" alt="" class="img-fluid" /></a>
+                    <h2>Audi A3 2.0 TFSI DYNAMIC Sedan 2017</h2>
+                    <p>El Audi A3 2.0 TFSI DYNAMIC Sedan 2017 es una opción destacada en el segmento de sedanes compactos premium, con un equilibrio entre rendimiento deportivo, tecnología avanzada y diseño sofisticado.</p>
+                </section>
+            </div>
+            <div class="col-md-3 col-6 mb-4">
+                <!-- Feature #3 -->
+                <section>
+                    <a href="#" class="bordered-feature-image"><img src="{% static 'img/c.webp' %}" alt="" class="img-fluid" /></a>
+                    <h2>Kia Rio 1.6 EX Sedan 2019</h2>
+                    <p>El Kia Rio 1.6 EX Sedan 2019 es un sedán subcompacto que ofrece una excelente combinación de eficiencia, confort y equipamiento a un precio accesible.</p>
+                </section>
+            </div>
+            <div class="col-md-3 col-6 mb-4">
+                <!-- Feature #4 -->
+                <section>
+                    <a href="#" class="bordered-feature-image"><img src="{% static 'img/d.webp' %}" alt="" class="img-fluid" /></a>
+                    <h2>Nissan March 1.6 ADVANCE Hatchback 2018</h2>
+                    <p>El Nissan March 1.6 ADVANCE Hatchback 2018 es un vehículo compacto ideal para la conducción urbana, con un diseño práctico, un motor eficiente y un equipamiento adecuado para su segmento.</p>
+                </section>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Content -->
+<section id="content" class="py-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-4 col-12 mb-4">
+                <!-- Box #1 -->
+                <section>
+                    <header>
+                        <h2>Comparador de precios de automóviles</h2>
+                        <h3>Descripción</h3>
+                    </header>
+                    <p>La siguiente página recopila información acerca del precio de vehículos en el mercado, dependiendo la marca. Esto compara sus precios, sus modelos, el consumo de gasolina, para cuántas personas es el vehículo y tipo de vehículo.</p>
+                </section>
+            </div>
+            <div class="col-md-4 col-12 mb-4">
+                <!-- Box #2 -->
+                <section>
+                    <header>
+                        <h3>Límites</h3>
+                    </header>
+                    <p>Este comparador solo incluye vehículos de marcas específicas disponibles en el mercado actual y no cubre todos los modelos existentes. Las variaciones de precios regionales o específicas de concesionarios pueden no estar contempladas en el sistema.</p>
+                    <header>
+                        <h3>Alcances</h3>
+                    </header>
+                    <p>El objetivo de esta página es brindar una referencia de precios y características básicas de vehículos populares en el mercado. El comparador permite que el usuario filtre por marca, modelo y tipo de vehículo, obteniendo una visión general del consumo de gasolina y capacidad del vehículo.</p>
+                </section>
+            </div>
+            <div class="col-md-4 col-12 mb-4">
+                <!-- Box #3 -->
+                <section>
+                    <header>
+                        <h3>Objetivos</h3>
+                    </header>
+                    <ul class="list-unstyled">
+                        <li>Comparar precios de diferentes marcas y modelos de automóviles.</li>
+                        <li>Brindar información detallada sobre el consumo de gasolina y la capacidad del vehículo.</li>
+                        <li>Facilitar la toma de decisiones para usuarios interesados en adquirir un vehículo.</li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

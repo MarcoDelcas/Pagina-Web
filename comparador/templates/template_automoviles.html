@@ -1,0 +1,42 @@
+{% extends "template.html" %}
+{% load static %}
+{% block title %} AUTOMOVILES {% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block contenido %}
+<div class="container my-5">
+    <section id="content">
+        <h2 class="text-center mb-4">Lista de Autos por Marca</h2>
+
+        {% for marca, autos in marca_grupos.items %}
+            <h3 class="mt-4">Marca: {{ marca }}</h3>
+            <table class="table table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Modelo</th>
+                        <th>Precio</th>
+                        <th>Cilindraje</th>
+                        <th>Tipo</th>
+                        <th>Capacidad de Personas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for auto in autos %}
+                        <tr>
+                            <td>{{ auto.id }}</td>
+                            <td>{{ auto.modelo }}</td>
+                            <td>{{ auto.precio }}</td>
+                            <td>{{ auto.cilindraje }}</td>
+                            <td>{{ auto.tipo }}</td>
+                            <td>{{ auto.capacidad_personas }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
+    </section>
+</div>
+{% endblock %}

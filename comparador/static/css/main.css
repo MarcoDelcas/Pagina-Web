@@ -1,0 +1,35 @@
+.navbar {
+    font-size: 1.25rem; /* Aumentamos el tamaño del texto */
+    padding: 1.5rem 1rem; /* Aumentamos el padding */
+  }
+  .navbar-brand {
+    font-size: 2rem; /* Tamaño grande para "CLOVER" */
+  }
+  .clover-item {
+    font-weight: bold;
+    color: #ff7b00 !important; 
+    text-transform: uppercase;
+    text-decoration: none;
+
+  }
+
+  .clover-item:hover {
+    text-decoration: underline;
+  }
+
+  /* Footer */
+  .footer {
+    background-color: #f8f9fa;
+    padding: 2rem 0;
+  }
+  .footer h5 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .footer a {
+    text-decoration: none;
+    color: #6c757d;
+  }
+  .footer a:hover {
+    color: #343a40;
+  }

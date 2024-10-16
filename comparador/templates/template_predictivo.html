@@ -1,0 +1,185 @@
+{% extends "template.html" %}
+{% load static %}
+{% block title %}REGRESIONES Y ALGORITMO DE KALMAN{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <style>
+        /* Centrando y ajustando el tamaño de los gráficos */
+        .canvas-container {
+            width: 80%; /* Ajusta el ancho al 80% */
+            margin: 20px auto; /* Centrando el contenedor */
+        }
+
+        h2, h3 {
+            text-align: center; /* Centrando los títulos */
+            margin: 20px 0; /* Espaciado vertical */
+        }
+
+        /* Estilos para el párrafo */
+        p {
+            text-align: justify; /* Justificando el texto */
+            margin: 10px 15%; /* Espaciado alrededor del párrafo */
+            color: #333; /* Color del texto */
+        }
+
+        /* Estilos de tablas */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Encabezados de tabla */
+        th {
+            background-color: #f8f9fa;
+            color: #575757;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Estilo de filas */
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        /* Efecto hover en filas */
+        tr:hover {
+            background-color: #d4e3f1;
+        }
+
+        /* Estilos personalizados */
+        td {
+            color: #333;
+        }
+    </style>
+{% endblock %}
+
+{% block contenido %}
+<body class="subpage">
+    <div id="page-wrapper" class="container">
+        <section id="content">
+            <h2>Gráficos de Regresión y Algoritmo de Kalman</h2>
+
+            <div class="canvas-container">
+                <h3>Regresión Lineal</h3>
+                <canvas id="regresionLineal" width="400" height="200"></canvas>
+
+                <h3>Regresión Cuadrática</h3>
+                <canvas id="regresionCuadratica" width="400" height="200"></canvas>
+
+                <h3>Algoritmo de Kalman</h3>
+                <canvas id="kalman" width="400" height="200"></canvas>
+            </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+            <script>
+                // Obtener los datos pasados desde Django
+                const precios = {{ precios|safe }};
+                const x = {{ x|safe }};
+                const m = {{ m }};
+                const b = {{ b }};
+                const coefCuadratica = {{ coef_cuadratica|safe }};
+                const preciosKalman = {{ precios_kalman|safe }};
+
+                // Regresión Lineal
+                const yLineal = x.map(i => m * i + b);
+                const ctxLineal = document.getElementById('regresionLineal').getContext('2d');
+                new Chart(ctxLineal, {
+                    type: 'line',
+                    data: {
+                        labels: x,
+                        datasets: [
+                            {
+                                label: 'Precios Observados',
+                                data: precios,
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                fill: false
+                            },
+                            {
+                                label: 'Regresión Lineal',
+                                data: yLineal,
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                fill: false
+                            }
+                        ]
+                    }
+                });
+
+                // Regresión Cuadrática
+                const yCuadratica = x.map(i => coefCuadratica[0] * i * i + coefCuadratica[1] * i + coefCuadratica[2]);
+                const ctxCuadratica = document.getElementById('regresionCuadratica').getContext('2d');
+                new Chart(ctxCuadratica, {
+                    type: 'line',
+                    data: {
+                        labels: x,
+                        datasets: [
+                            {
+                                label: 'Precios Observados',
+                                data: precios,
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                fill: false
+                            },
+                            {
+                                label: 'Regresión Cuadrática',
+                                data: yCuadratica,
+                                borderColor: 'rgba(255, 159, 64, 1)',
+                                fill: false
+                            }
+                        ]
+                    }
+                });
+
+                // Algoritmo de Kalman
+                const ctxKalman = document.getElementById('kalman').getContext('2d');
+                new Chart(ctxKalman, {
+                    type: 'line',
+                    data: {
+                        labels: x,
+                        datasets: [
+                            {
+                                label: 'Precios Observados',
+                                data: precios,
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                fill: false
+                            },
+                            {
+                                label: 'Estimaciones de Kalman',
+                                data: preciosKalman,
+                                borderColor: 'rgba(153, 102, 255, 1)',
+                                fill: false
+                            }
+                        ]
+                    }
+                });
+            </script>
+
+            <p>
+                La regresión lineal se utiliza para predecir la relación entre variables, proporcionando una línea que minimiza la suma de las distancias al cuadrado entre los puntos y la línea.
+            </p>
+            <p>
+                La regresión cuadrática permite ajustar una curva, capturando relaciones más complejas entre las variables.
+            </p>
+            <p>
+                El algoritmo de Kalman es un método que estima el estado de un sistema a partir de mediciones ruidosas, proporcionando predicciones más suaves.
+            </p>
+        </section>
+    </div>
+</body>
+{% endblock %}
