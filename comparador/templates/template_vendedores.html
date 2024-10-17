@@ -3,60 +3,7 @@
 {% block title %}VENDEDORES{% endblock %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
-    <style>
-        /* Centrando y ajustando el tamaño de las tablas */
-        .table-container {
-            width: 80%; /* Ajusta el ancho al 80% */
-            margin: 0 auto; /* Centrando la tabla */
-            padding: 20px 0; /* Espaciado vertical */
-        }
-
-        /* Estilos de tablas */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-
-        th, td {
-            padding: 15px;
-            text-align: left;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        /* Encabezados de tabla */
-        th {
-            background-color: #f8f9fa;
-            color: #575757;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        /* Estilo de filas */
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        tr:nth-child(odd) {
-            background-color: #ffffff;
-        }
-
-        /* Efecto hover en filas */
-        tr:hover {
-            background-color: #d4e3f1;
-        }
-
-        /* Estilos personalizados */
-        td {
-            color: #333;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/vendedores.css' %}">
 {% endblock %}
 
 {% block contenido %}
@@ -72,8 +19,8 @@
                             <th>ID Vendedor</th>
                             <th>Nombre</th>
                             <th>Correo</th>
-                            <th>TTL</th>
-                            <th>Acumulado Ventas (Mes)</th>
+                            <th>Antiguedad</th>
+                            <th>Comision</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -82,8 +29,8 @@
                             <td>{{ vendedor.id_vendedor }}</td>
                             <td>{{ vendedor.nombre }}</td>
                             <td>{{ vendedor.correo }}</td>
-                            <td>{{ vendedor.ttl }}</td>
-                            <td>{{ vendedor.acumulado_ventas_mes }}</td>
+                            <td>{{ vendedor.antiguedad}}</td>
+                            <td>{{ vendedor.comision }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>

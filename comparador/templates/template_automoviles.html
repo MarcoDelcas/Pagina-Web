@@ -21,6 +21,7 @@
                         <th>Cilindraje</th>
                         <th>Tipo</th>
                         <th>Capacidad de Personas</th>
+                        <th>Imagen</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -32,6 +33,9 @@
                             <td>{{ auto.cilindraje }}</td>
                             <td>{{ auto.tipo }}</td>
                             <td>{{ auto.capacidad_personas }}</td>
+                            <td>
+                                <img src="{% static auto.imagen %}" alt="{{ auto.modelo }}" class="img-fluid" style="max-width: 250px; max-height: 100px;">
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>

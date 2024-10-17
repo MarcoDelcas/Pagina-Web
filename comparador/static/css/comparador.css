@@ -1,0 +1,214 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+#page-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+section#content {
+    width: 60%;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Estilos del título */
+h1 {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Estilos de las tablas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+th {
+    background-color: #f8f8f8;
+    text-transform: uppercase;
+    color: #555;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #e0f7fa;
+}
+
+/* Estilo del select */
+#autos {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    appearance: none;
+}
+
+/* Contenedor de autos seleccionados */
+.container {
+    margin-top: 20px;
+}
+
+.selected-autos {
+    margin-top: 20px;
+}
+
+#selected-autos-list li {
+    padding: 8px 10px;
+    background-color: #f1f1f1;
+    margin: 5px 0;
+    border-radius: 4px;
+}
+
+/* Gráficos */
+canvas {
+    margin: 30px auto;
+    display: block;
+}
+
+/* Estilos para la imagen del automóvil */
+.car-image {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.car-image img {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    section#content {
+        width: 90%;
+    }
+    
+    h1 {
+        font-size: 1.5em;
+    }
+    
+    table, th, td {
+        font-size: 14px;
+        padding: 10px;
+    }
+    
+    #autos {
+        font-size: 14px;
+    }
+}
+
+/* Tablas */
+table {
+    width: 60%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+table, th, td {
+    border: 1px solid var(--color-table-border);
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Encabezados de tabla */
+th {
+    background-color: var(--color-table-header);
+    color: #575757;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* Estilo de filas */
+tr:nth-child(even) {
+    background-color: var(--color-table-even);
+}
+
+tr:nth-child(odd) {
+    background-color: var(--color-table-odd);
+}
+
+/* Estilo de las celdas */
+td {
+    color: var(--color-text);
+}
+
+/* Efecto hover en filas */
+tr:hover {
+    background-color: #d4e3f1; /* Cambio de fondo al pasar el mouse */
+}
+
+                            /* Estilo del select */
+                            #autos {
+                                width: 100%;
+                                padding: 10px;
+                                font-size: 16px;
+                                border: 1px solid var(--color-table-border);
+                                border-radius: 4px;
+                                background-color: #ffffff;
+                                color: var(--color-text);
+                                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                                appearance: none; /* Quitar el estilo predeterminado del navegador */
+                                background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5"><polygon points="0,0 5,5 10,0" fill="%23999" /></svg>');
+                                background-repeat: no-repeat;
+                                background-position: right 10px center; /* Posición del icono */
+                                background-size: 10px;
+                            }
+                        
+                            /* Estilo de las opciones */
+                            #autos option {
+                                padding: 10px;
+                                font-size: 16px;
+                                background-color: #ffffff;
+                                color: var(--color-text);
+                            }
+                        
+                            /* Efecto hover en el select */
+                            #autos:hover {
+                                border-color: var(--color-table-border-hover);
+                                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+                            }
+                        
+                            /* Efecto al seleccionar */
+                            #autos:focus {
+                                outline: none; /* Quitar el borde predeterminado del enfoque */
+                                border-color: var(--color-table-border-focus);
+                                box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Sombra azul al enfocar */
+                            }
