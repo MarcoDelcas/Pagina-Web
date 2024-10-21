@@ -3,7 +3,7 @@
 {% block title %}COMPARADOR{% endblock %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/comparador.css' %}">
 {% endblock %}
 
 {% block contenido %}
@@ -14,54 +14,6 @@
             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
             <h1>Comparador de Autos</h1>
-
-            <style>
-                /* Tablas */
-                table {
-                    width: 100%;
-                    border-collapse: collapse;
-                    margin: 20px 0;
-                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                }
-
-                table, th, td {
-                    border: 1px solid var(--color-table-border);
-                }
-
-                th, td {
-                    padding: 15px;
-                    text-align: left;
-                    transition: background-color 0.3s, color 0.3s;
-                }
-
-                /* Encabezados de tabla */
-                th {
-                    background-color: var(--color-table-header);
-                    color: #575757;
-                    text-transform: uppercase;
-                    letter-spacing: 0.1em;
-                }
-
-                /* Estilo de filas */
-                tr:nth-child(even) {
-                    background-color: var(--color-table-even);
-                }
-
-                tr:nth-child(odd) {
-                    background-color: var(--color-table-odd);
-                }
-
-                /* Estilo de las celdas */
-                td {
-                    color: var(--color-text);
-                }
-
-                /* Efecto hover en filas */
-                tr:hover {
-                    background-color: #d4e3f1; /* Cambio de fondo al pasar el mouse */
-                }
-            </style>
-
             <form method="POST" id="autoForm">
                 {% csrf_token %}
 
@@ -69,45 +21,6 @@
                     <div class="autos-list">
                         <h2>Seleccionar Auto</h2>
                         
-                        <style>
-                            /* Estilo del select */
-                            #autos {
-                                width: 100%;
-                                padding: 10px;
-                                font-size: 16px;
-                                border: 1px solid var(--color-table-border);
-                                border-radius: 4px;
-                                background-color: #ffffff;
-                                color: var(--color-text);
-                                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-                                appearance: none; /* Quitar el estilo predeterminado del navegador */
-                                background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5"><polygon points="0,0 5,5 10,0" fill="%23999" /></svg>');
-                                background-repeat: no-repeat;
-                                background-position: right 10px center; /* Posición del icono */
-                                background-size: 10px;
-                            }
-                        
-                            /* Estilo de las opciones */
-                            #autos option {
-                                padding: 10px;
-                                font-size: 16px;
-                                background-color: #ffffff;
-                                color: var(--color-text);
-                            }
-                        
-                            /* Efecto hover en el select */
-                            #autos:hover {
-                                border-color: var(--color-table-border-hover);
-                                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-                            }
-                        
-                            /* Efecto al seleccionar */
-                            #autos:focus {
-                                outline: none; /* Quitar el borde predeterminado del enfoque */
-                                border-color: var(--color-table-border-focus);
-                                box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Sombra azul al enfocar */
-                            }
-                        </style>
 
                         <select name="selected_autos" id="autos" onchange="addAuto()">
                             <option value="">Seleccionar un auto...</option>
