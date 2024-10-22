@@ -7,5 +7,34 @@
 {% endblock %}
 
 {% block contenido %}
+<div class="container mt-5">
+    <h1 class="text-center">Ofertas Especiales</h1>
+    {% if mensaje %}
+        <div class="alert alert-warning">{{ mensaje }}</div>
+    {% else %}
+        <div class="row">
+            {% for auto in autos %}
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <img src="{% static auto.imagen %}" alt="{{ auto.modelo }}" class="img-fluid" style="max-width: 250px; max-height: 100px;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ auto.nombre }}</h5>
+                        <p class="card-text">{{ auto.descripcion }}</p>
+                        <p class="card-text"><strong>Precio: </strong>${{ auto.precio }}</p>
+                        <p class="card-text"><strong>Oferta: </strong>${{ auto.oferta }}</p>
+                        
+                        <!-- Formulario para enviar oferta -->
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="auto_id" value="{{ auto.id }}">
+                            <button type="submit" class="btn btn-primary">Enviar Oferta</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
 
 {% endblock %}

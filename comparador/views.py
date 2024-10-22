@@ -3,6 +3,9 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from .models import *
 from django.db.models import Count
+import random
+from django.core.mail import send_mail
+from django.conf import settings
 
 # Create your views here.
 def dashboard_login(request):
@@ -142,9 +145,67 @@ def dashboard_predictivo(request):
     
     return render(request, 'template_predictivo.html', context)
 
-
 def dashboard_oportunidades(request):
-    return render(request, 'template_oportunidades.html')
+    # Tomamos todos los autos de la base de datos
+    autos = list(Automovil.objects.all())
+    
+    # Verificamos cuántos autos hay
+    num_autos = len(autos)
+    
+    if num_autos == 0:
+        # Manejar el caso de no tener autos
+        return render(request, 'ofertas.html', {'autos': [], 'mensaje': 'No hay autos disponibles en este momento.'})
+
+    # Si hay menos de 3 autos, ajustamos la cantidad de autos a seleccionar
+    cantidad_a_seleccionar = min(num_autos, 3)
+    
+    # Seleccionamos los autos aleatorios
+    autos_aleatorios = random.sample(autos, cantidad_a_seleccionar)
+
+    # Creamos una lista para almacenar autos y sus ofertas
+    autos_con_oferta = []
+    
+    # Calculamos la oferta (precio - 30,000) y agregamos al objeto
+    for auto in autos_aleatorios:
+        oferta = auto.precio - 30000  # Calculamos la oferta
+        autos_con_oferta.append({
+            'nombre': auto.nombre,
+            'precio': auto.precio,
+            'descripcion': auto.descripcion,
+            'imagen': auto.imagen.url,
+            'oferta': oferta,
+            'id': auto.id
+        })
+
+    # Si el usuario envía una oferta
+    if request.method == "POST":
+        auto_id = request.POST.get('auto_id')
+        auto = Automovil.objects.get(id=auto_id)
+        # Lista de correos electrónicos a los que se enviará la oferta
+        destinatarios = [
+        ]
+        enviar_oferta_por_correo(auto, destinatarios)
+        return redirect('mensaje_exitoso') 
+    # Renderizamos el template
+    return render(request, 'template_oportunidades.html', {'autos': autos_con_oferta})
+
+def enviar_oferta_por_correo(auto, destinatarios):
+    # Crear el cuerpo del correo con la oferta
+    mensaje = f"Hola,\n\nTienes una nueva oferta para el automóvil:\n\n" \
+              f"Nombre: {auto.nombre}\n" \
+              f"Precio: ${auto.precio}\n" \
+              f"Oferta: ${auto.oferta}\n" \
+              f"Descripción: {auto.descripcion}\n\n" \
+              f"¡Gracias por tu interés!"
+
+    # Enviar el correo a la lista de destinatarios
+    send_mail(
+        subject='Nueva Oferta de Automóvil',
+        message=mensaje,
+        from_email=settings.EMAIL_HOST_USER,
+        recipient_list=destinatarios,
+        fail_silently=False,
+    )
 
 def dashboard_comparador(request):
     autos = Automoviles.objects.all()  # Obtener todos los autos disponibles
@@ -155,8 +216,12 @@ def dashboard_comparador(request):
         # Filtrar los IDs vacíos
         selected_ids = [id for id in selected_ids if id]  
         selected_autos = Automoviles.objects.filter(id__in=selected_ids)  # Filtrar los autos seleccionados
+        
 
     return render(request, 'template_comparador.html', {'autos': autos, 'selected_autos': selected_autos})
 
 def dashboard_desiciones(request):
     return render(request, 'template_desiciones.html')
+
+def mensaje_exitoso_view(request):
+    return render(request,'mensaje_exitoso.html')
