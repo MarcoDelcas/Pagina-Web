@@ -28,3 +28,17 @@ class Factura(models.Model):
     importe = models.DecimalField(max_digits=10, decimal_places=2)
     fecha = models.DateField(default=timezone.now)
     precio = models.DecimalField(max_digits=12, decimal_places=2)  # Definir correctamente este campo
+
+class Automovil(models.Model):
+    nombre = models.CharField(max_length=255)
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
+    descripcion = models.TextField()
+    imagen = models.ImageField(upload_to='automoviles/')
+    correo_contacto = models.EmailField(max_length=255)  # Correo del contacto
+
+    @property
+    def oferta(self):
+        return self.precio - 30000  # Calculamos la oferta
+
+    def __str__(self):
+        return self.nombre

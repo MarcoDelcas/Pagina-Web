@@ -14,6 +14,7 @@
             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
             <h1>Comparador de Autos</h1>
+
             <form method="POST" id="autoForm">
                 {% csrf_token %}
 
@@ -21,6 +22,7 @@
                     <div class="autos-list">
                         <h2>Seleccionar Auto</h2>
                         
+                    
 
                         <select name="selected_autos" id="autos" onchange="addAuto()">
                             <option value="">Seleccionar un auto...</option>

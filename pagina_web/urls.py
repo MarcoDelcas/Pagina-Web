@@ -32,4 +32,5 @@ urlpatterns = [
     path('dashboard_oportunidades/',views.dashboard_oportunidades, name='dashboard_oportunidades'),
     path('dashboard_desiciones/',views.dashboard_desiciones, name='dashboard_desiciones'),
     path('comparador/',views.dashboard_home, name='comparador'),
+    path('mensaje-exitoso/', views.mensaje_exitoso_view, name='mensaje_exitoso'),
 ]
